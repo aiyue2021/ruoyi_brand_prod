@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('品牌详细')" />
+</head>
+<body>
+    <div class="main-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="mail-box-header">
+                    <div class="mail-tools tooltip-demo m-t-md">
+                        <h3 style="text-align: center">[[${brand.brandName}]]</h3>
+                    </div>
+                </div>
+                <div class="mail-box">
+                    <div class="mail-body" th:utext="${brand.brandUrl}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+</body>
+</html>

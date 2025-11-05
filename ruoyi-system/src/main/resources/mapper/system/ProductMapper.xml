@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ProductMapper">
+    
+    <resultMap type="Product" id="ProductResult">
+    	<id     property="id"      column="id"      />
+        <result property="brandId"    column="brand_id"    />
+        <result property="prodName"    column="prod_name"    />
+        <result property="prodUrl"     column="prod_url"     />
+        <result property="prodPrice"     column="prod_price"     />
+        <result property="prodSalesScore"     column="prod_sales_score"     />
+        <result property="prodType"     column="prod_type"     />
+        <result property="prodDate"     column="prod_date"     />
+    </resultMap>
+
+    <sql id="selectProductVo">
+        select HEX(id), HEX(brand_id), prod_name, prod_url,brand_id,prod_name,prod_url,prod_price,prod_sales_score,prod_type,prod_date
+		from product
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="id !=null">
+				and id = UNHEX(#{id})
+			</if>
+            <if test="brandId !=null and brandId != ''">
+                and brand_id = UNHEX(#{brandId})
+            </if>
+			<if test="prodName !=null and prodName != ''">
+				and prod_name like CONCAT('%', #{prodName}, '%')
+			</if>
+            <if test="prodUrl !=null and prodUrl != ''">
+                and prod_url = #{prodUrl}
+            </if>
+		</where>
+	</sql>
+    
+    <select id="selectProduct" parameterType="Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+
+    <select id="selectProductList" parameterType="Product" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        <where>
+			<if test="brandId != null and brandId != ''">
+				AND brand_id = #{brandId}
+			</if>
+            <if test="prodName != null and prodName != ''">
+                AND prod_name like concat('%', #{prodName}, '%')
+            </if>
+			<if test="prodUrl != null and prodUrl != ''">
+				AND prod_url = #{prodUrl}
+			</if>
+		</where>
+    </select>
+    
+    <select id="selectProductById" parameterType="String" resultMap="ProductResult">
+		<include refid="selectProductVo"/>
+		where id = UNHEX(#{id})
+	</select>
+
+    <select id="checkProductKeyUnique" parameterType="String" resultMap="ProductResult">
+        <include refid="selectProductVo"/>
+        where prod_name = #{prodName} limit 1
+    </select>
+    
+    <insert id="insertProduct" parameterType="Product">
+        insert into product (
+        <if test="brandId != null and brandId != '' ">brand_id,</if>
+			<if test="prodName != null and prodName != '' ">prod_name,</if>
+			<if test="prodUrl != null and prodUrl != '' ">prod_url,</if>
+        <if test="prodPrice != null">prod_price,</if>
+        <if test="prodSalesScore != null">prod_sales_score,</if>
+        <if test="prodType != null and prodType != '' ">prod_type,</if>
+        <if test="prodDate != null">prod_date,</if>
+        id
+        )values(
+        <if test="brandId != null and brandId != '' ">UNHEX(#{brandId}),</if>
+			<if test="prodName != null and prodName != ''">#{prodName},</if>
+			<if test="prodUrl != null and prodUrl != ''">#{prodUrl},</if>
+        <if test="prodPrice != null">#{prodPrice},</if>
+        <if test="prodSalesScore != null">#{prodSalesScore},</if>
+        <if test="prodType != null and prodType != '' ">#{prodType},</if>
+        <if test="prodDate != null">#{prodDate},</if>
+ 			UNHEX(REPLACE(#{id}, '-', ''))
+		)
+    </insert>
+	 
+    <update id="updateProduct" parameterType="Product">
+        update product
+        <set>
+            <if test="brandId != null and brandId != ''">brand_id = UNHEX(#{brandId}),</if>
+            <if test="prodName != null and prodName != ''">prod_name = #{prodName},</if>
+            <if test="prodUrl != null and prodUrl != ''">prod_url = #{prodUrl},</if>
+            <if test="prodPrice != null">prod_price = #{prodPrice},</if>
+            <if test="prodSalesScore != null">prod_sales_score = #{prodSalesScore},</if>
+            <if test="prodType != null and prodType != ''">prod_type = #{prodType},</if>
+            <if test="prodDate != null">prod_date = #{prodDate},</if>
+        </set>
+        where id = UNHEX(#{id})
+    </update>
+	
+	<delete id="deleteProductById" parameterType="String">
+		delete from product where id = UNHEX(#{id})
+	</delete>
+	
+    <delete id="deleteProductByIds" parameterType="String">
+        delete from product where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            UNHEX(#{id})
+        </foreach>
+    </delete>
+    
+</mapper>

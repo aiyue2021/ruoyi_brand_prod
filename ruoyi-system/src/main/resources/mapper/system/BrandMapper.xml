@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BrandMapper">
+    
+    <resultMap type="Brand" id="BrandResult">
+    	<id     property="id"      column="id"      />
+        <result property="brandName"    column="brand_name"    />
+        <result property="brandUrl"     column="brand_url"     />
+    </resultMap>
+    
+    <sql id="selectBrandVo">
+        select HEX(id), brand_name, brand_url
+		from brand
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="id !=null">
+				and id = UNHEX(#{id})
+			</if>
+			<if test="brandName !=null and brandName != ''">
+				and brand_name like CONCAT('%', #{brandName}, '%')
+			</if>
+            <if test="brandUrl !=null and brandUrl != ''">
+                and brand_url = #{brandUrl}
+            </if>
+		</where>
+	</sql>
+    
+    <select id="selectBrand" parameterType="Brand" resultMap="BrandResult">
+        <include refid="selectBrandVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+    
+    <select id="selectBrandList" parameterType="Brand" resultMap="BrandResult">
+        <include refid="selectBrandVo"/>
+        <where>
+			<if test="brandName != null and brandName != ''">
+				AND brand_name like concat('%', #{brandName}, '%')
+			</if>
+			<if test="brandUrl != null and brandUrl != ''">
+				AND brand_url = #{brandUrl}
+			</if>
+		</where>
+    </select>
+    
+    <select id="selectBrandById" parameterType="String" resultMap="BrandResult">
+		<include refid="selectBrandVo"/>
+		where id = UNHEX(#{id})
+	</select>
+    
+    <select id="checkBrandKeyUnique" parameterType="String" resultMap="BrandResult">
+        <include refid="selectBrandVo"/>
+        where brand_name = #{brandName} limit 1
+    </select>
+    
+    <insert id="insertBrand" parameterType="Brand">
+        insert into brand (
+			<if test="brandName != null and brandName != '' ">brand_name,</if>
+			<if test="brandUrl != null and brandUrl != '' ">brand_url,</if>
+        id
+        )values(
+			<if test="brandName != null and brandName != ''">#{brandName},</if>
+			<if test="brandUrl != null and brandUrl != ''">#{brandUrl},</if>
+ 			UNHEX(REPLACE(#{id}, '-', ''))
+		)
+    </insert>
+	 
+    <update id="updateBrand" parameterType="Brand">
+        update brand 
+        <set>
+            <if test="brandName != null and brandName != ''">brand_name = #{brandName},</if>
+            <if test="brandUrl != null and brandUrl != ''">brand_url = #{brandUrl},</if>
+        </set>
+        where id = UNHEX(#{id})
+    </update>
+	
+	<delete id="deleteBrandById" parameterType="String">
+		delete from brand where id = UNHEX(#{id})
+	</delete>
+	
+    <delete id="deleteBrandByIds" parameterType="String">
+        delete from brand where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            UNHEX(#{id})
+        </foreach>
+    </delete>
+    
+</mapper>
