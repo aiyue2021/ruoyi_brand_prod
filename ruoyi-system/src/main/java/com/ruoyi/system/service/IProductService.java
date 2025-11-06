@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.common.core.domain.Stree;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.system.domain.Brand;
@@ -20,7 +21,7 @@ public interface IProductService
      * @param brand 产品信息
      * @return 所有产品信息
      */
-    public List<Ztree> selectBrandTree(Brand brand);
+    public List<Stree> selectBrandTree(Brand brand);
     /**
      * 通过ID查询配置
      * 

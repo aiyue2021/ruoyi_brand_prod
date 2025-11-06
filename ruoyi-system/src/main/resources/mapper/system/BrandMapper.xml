@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
     
     <sql id="selectBrandVo">
-        select HEX(id), brand_name, brand_url
+        select HEX(id) as id, brand_name, brand_url
 		from brand
     </sql>
     

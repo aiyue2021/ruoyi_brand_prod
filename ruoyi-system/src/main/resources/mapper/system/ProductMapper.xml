@@ -13,18 +13,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="prodSalesScore"     column="prod_sales_score"     />
         <result property="prodType"     column="prod_type"     />
         <result property="prodDate"     column="prod_date"     />
+        <association property="brand"     javaType="Brand"         resultMap="brandResult" />
     </resultMap>
 
+    <resultMap id="brandResult" type="Brand">
+        <id     property="id"      column="id"      />
+        <result property="brandName"    column="brand_name"    />
+        <result property="brandUrl"     column="brand_url"     />
+    </resultMap>
     <sql id="selectProductVo">
-        select HEX(id), HEX(brand_id), prod_name, prod_url,brand_id,prod_name,prod_url,prod_price,prod_sales_score,prod_type,prod_date
-		from product
+        select HEX(p.id) as id, d.brand_name, prod_name, prod_url,brand_id,prod_name,prod_url,prod_price,prod_sales_score,prod_type,prod_date
+		from product as p
+        left join brand as d on p.brand_id = d.id
     </sql>
     
     <!-- 查询条件 -->
 	<sql id="sqlwhereSearch">
 		<where>
 			<if test="id !=null">
-				and id = UNHEX(#{id})
+				and p.id = UNHEX(#{id})
 			</if>
             <if test="brandId !=null and brandId != ''">
                 and brand_id = UNHEX(#{brandId})

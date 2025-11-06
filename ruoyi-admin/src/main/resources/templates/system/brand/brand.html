@@ -59,14 +59,10 @@
 		            checkbox: true
 		        },
 				{
-					field : 'brandId', 
-					title : '序号' 
-				},
-				{
 		            field: 'brandName',
 		            title: '品牌名称',
 		            formatter: function (value, row, index) {
-		                return '<a href="javascript:void(0)" onclick="$.operate.view(\'' + row.brandId + '\')">' + value + '</a>';
+		                return '<a href="javascript:void(0)" onclick="$.operate.view(\'' + row.id + '\')">' + value + '</a>';
 		            }
 		        },
 				{
@@ -79,8 +75,8 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		            	var actions = [];
-		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull(\'' + row.brandId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.brandId + '\')"><i class="fa fa-remove"></i>删除</a>');
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
 						return actions.join('');
 		            }
 		        }]

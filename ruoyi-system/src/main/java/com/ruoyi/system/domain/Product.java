@@ -1,6 +1,7 @@
 package com.ruoyi.system.domain;
 
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.annotation.Excels;
 import lombok.Data;
 
 import java.util.Date;
@@ -25,4 +26,8 @@ public class Product {
     private Date prodDate;
     @Excel(name = "备用字段")
     private String tag;
+    @Excels({
+            @Excel(name = "品牌名称", targetAttr = "brandName", type = Excel.Type.EXPORT),
+    })
+    private Brand brand;
 }
