@@ -1,12 +1,19 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.Ztree;
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.text.Convert;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.Brand;
 import com.ruoyi.system.domain.Product;
+import com.ruoyi.system.mapper.BrandMapper;
 import com.ruoyi.system.mapper.ProductMapper;
 import com.ruoyi.system.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +27,43 @@ public class ProductServiceImpl implements IProductService
 
     @Autowired
     private ProductMapper productMapper;
-
+    @Autowired
+    private BrandMapper brandMapper;
+    /**
+     * 对象转品牌树
+     *
+     * @param brandList 品牌列表
+     * @return 树结构列表
+     */
+    public List<Ztree> initZtree(List<Brand> brandList)
+    {
+        List<Ztree> ztrees = new ArrayList<Ztree>();
+        for (Brand brand : brandList)
+        {
+            Ztree ztree = new Ztree();
+            ztree.setId(Long.valueOf(brand.getId()));
+            ztree.setpId(0L);
+            ztree.setName(brand.getBrandName());
+            ztree.setTitle(brand.getBrandName());
+            ztree.setChecked(false);
+            ztrees.add(ztree);
+        }
+        return ztrees;
+    }
+    
+    /**
+     * 对象转品牌树
+     *
+     * @param brand 品牌列表
+     * @return 树结构列表
+     */
+    @Override
+    public List<Ztree> selectBrandTree(Brand brand)
+    {
+        List<Brand> deptList = brandMapper.selectBrandList(brand);
+        List<Ztree> ztrees = initZtree(deptList);
+        return ztrees;
+    }
     /**
      * 通过ID查询配置
      * 
