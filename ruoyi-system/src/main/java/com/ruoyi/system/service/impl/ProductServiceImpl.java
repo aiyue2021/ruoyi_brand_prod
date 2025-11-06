@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.constant.UserConstants;
+import com.ruoyi.common.core.domain.Stree;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.text.Convert;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 产品 服务层实现
@@ -35,14 +37,14 @@ public class ProductServiceImpl implements IProductService
      * @param brandList 品牌列表
      * @return 树结构列表
      */
-    public List<Ztree> initZtree(List<Brand> brandList)
+    public List<Stree> initZtree(List<Brand> brandList)
     {
-        List<Ztree> ztrees = new ArrayList<Ztree>();
+        List<Stree> ztrees = new ArrayList<Stree>();
         for (Brand brand : brandList)
         {
-            Ztree ztree = new Ztree();
-            ztree.setId(Long.valueOf(brand.getId()));
-            ztree.setpId(0L);
+            Stree ztree = new Stree();
+            ztree.setId(brand.getId());
+            ztree.setpId("0");
             ztree.setName(brand.getBrandName());
             ztree.setTitle(brand.getBrandName());
             ztree.setChecked(false);
@@ -58,10 +60,10 @@ public class ProductServiceImpl implements IProductService
      * @return 树结构列表
      */
     @Override
-    public List<Ztree> selectBrandTree(Brand brand)
+    public List<Stree> selectBrandTree(Brand brand)
     {
         List<Brand> deptList = brandMapper.selectBrandList(brand);
-        List<Ztree> ztrees = initZtree(deptList);
+        List<Stree> ztrees = initZtree(deptList);
         return ztrees;
     }
     /**
@@ -94,6 +96,7 @@ public class ProductServiceImpl implements IProductService
      */
     @Override
     public int insertProduct(Product product) {
+        product.setId(UUID.randomUUID().toString());
         return productMapper.insertProduct(product);
     }
 

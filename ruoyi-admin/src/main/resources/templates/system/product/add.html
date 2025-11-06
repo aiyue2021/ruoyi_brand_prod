@@ -7,7 +7,7 @@
 <body>
     <div class="main-content">
         <form id="form-product-add" class="form-horizontal">
-            <input name="deptId" type="hidden" id="treeId"/>
+            <input name="brandId" type="hidden" id="treeId"/>
             <h4 class="form-header h4">基本信息</h4>
             <div class="row">
             	<div class="col-sm-6">
@@ -23,7 +23,7 @@
                         <label class="col-sm-4 control-label">归属品牌：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                            	<input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属品牌" class="form-control">
+                            	<input name="deptName" onclick="selectBrandTree()" id="treeName" type="text" placeholder="请选择归属品牌" class="form-control">
                                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
@@ -89,50 +89,19 @@
         $("#form-product-add").validate({
         	onkeyup: false,
         	rules:{
-        		prodPrice:{
+                prodName:{
         			minlength: 2,
         			maxlength: 20,
-        			remote: {
-                        url: prefix + "/checkLoginNameUnique",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                        	"prodPrice": function() {
-                                return $.common.trim($("#prodPrice").val());
-                            }
-                        }
-                    }
-        		},
-        		password:{
-        			minlength: 5,
-        			maxlength: 20,
-        			specialSign: true
-        		},
-        		prodUrl:{
-                    prodUrl:true,
-                    remote: {
-                        url: prefix + "/checkEmailUnique",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            "prodUrl": function () {
-                                return $.common.trim($("#prodUrl").val());
-                            }
-                        }
-                    }
-        		},
-        		phonenumber:{
-        			isPhone:true,
-                    remote: {
-                        url: prefix + "/checkPhoneUnique",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            "phonenumber": function () {
-                                return $.common.trim($("#phonenumber").val());
-                            }
-                        }
-                    }
+        			// remote: {
+                    //     url: prefix + "/checkLoginNameUnique",
+                    //     type: "post",
+                    //     dataType: "json",
+                    //     data: {
+                    //     	"prodPrice": function() {
+                    //             return $.common.trim($("#prodPrice").val());
+                    //         }
+                    //     }
+                    // }
         		},
         	},
         	messages: {
@@ -165,10 +134,10 @@
 	    }
          
         /* 产品管理-新增-选择品牌树 */
-        function selectDeptTree() {
+        function selectBrandTree() {
         	var treeId = $("#treeId").val();
-        	var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        	var url = ctx + "system/product/selectDeptTree/" + deptId;
+        	var brandId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        	var url = ctx + "system/product/selectBrandTree/" + brandId;
             var btn = ['<i class="fa fa-check"></i> 确认', '<i class="fa fa-trash-o"></i> 清除', '<i class="fa fa-close"></i> 关闭'];
 			var options = {
 				title: '选择品牌',

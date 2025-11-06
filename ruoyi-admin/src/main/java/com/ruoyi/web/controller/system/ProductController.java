@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.system;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.Stree;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.text.Convert;
@@ -41,6 +42,8 @@ public class ProductController extends BaseController
 
     @Autowired
     private IProductService productService;
+    @Autowired
+    private IBrandService brandService;
 
     @RequiresPermissions("system:product:view")
     @GetMapping()
@@ -60,15 +63,28 @@ public class ProductController extends BaseController
     }
 
     /**
-     * 加载部门列表树
+     * 加载品牌列表树
      */
     @RequiresPermissions("system:product:list")
-    @GetMapping("/productTreeData")
+    @GetMapping("/brandTreeData")
     @ResponseBody
-    public List<Ztree> productTreeData()
+    public List<Stree> brandTreeData()
     {
-        List<Ztree> ztrees = productService.selectBrandTree(new Brand());
+        List<Stree> ztrees = productService.selectBrandTree(new Brand());
         return ztrees;
+    }
+    
+    /**
+     * 选择品牌树
+     *
+     * @param brandId 品牌ID
+     */
+    @RequiresPermissions("system:product:list")
+    @GetMapping("/selectBrandTree/{brandId}")
+    public String selectBrandTree(@PathVariable("brandId") String brandId, ModelMap mmap)
+    {
+        mmap.put("brand", brandService.selectBrandById(brandId));
+        return prefix + "/brandTree";
     }
 
 
@@ -120,7 +136,10 @@ public class ProductController extends BaseController
     @GetMapping("/edit/{prodId}")
     public String edit(@PathVariable("prodId") String prodId, ModelMap mmap)
     {
-        mmap.put("product", productService.selectProductById(prodId));
+        mmap.put("id", prodId);
+        Product product = productService.selectProductById(prodId);
+        mmap.put("product", product);
+        mmap.put("brand", product.getBrandId());
         return prefix + "/edit";
     }
 

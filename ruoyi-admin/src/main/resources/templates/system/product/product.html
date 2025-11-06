@@ -113,22 +113,18 @@
 		        exportUrl: prefix + "/export",
 		        importUrl: prefix + "/importData",
 		        importTemplateUrl: prefix + "/importTemplate",
-		        sortName: "createTime",
+		        sortName: "prodDate",
 		        sortOrder: "desc",
 		        modalName: "产品",
 		        columns: [{
 		            checkbox: true
 		        },
 		        {
-		            field: 'productId',
-		            title: '产品ID'
-		        },
-		        {
 		            field: 'prodName',
 		            title: '产品名称',
 		            sortable: true,
 		            formatter: function (value, row, index) {
-		                return '<a href="javascript:void(0)" onclick="$.operate.view(\'' + row.productId + '\')">' + value + '</a>';
+		                return '<a href="javascript:void(0)" onclick="$.operate.view(\'' + row.id + '\')">' + value + '</a>';
 		            }
 		        },
                 {
@@ -160,13 +156,13 @@
 		            title: '操作',
 		            align: 'center',
 		            formatter: function(value, row, index) {
-		                if (row.productId != 1) {
+		                if (row.id != 1) {
 		                	var actions = [];
-			                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editTab(\'' + row.productId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-			                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.productId + '\')"><i class="fa fa-remove"></i>删除</a> ');
+			                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editTab(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+			                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
 			                var more = [];
-			                more.push("<a class='btn btn-default btn-xs " + resetPwdFlag + "' href='javascript:void(0)' onclick='resetPwd(" + row.productId + ")'><i class='fa fa-key'></i>重置密码</a> ");
-			                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authRole(" + row.productId + ")'><i class='fa fa-check-square-o'></i>分配角色</a>");
+			                more.push("<a class='btn btn-default btn-xs " + resetPwdFlag + "' href='javascript:void(0)' onclick='resetPwd(" + row.id + ")'><i class='fa fa-key'></i>重置密码</a> ");
+			                more.push("<a class='btn btn-default btn-xs " + editFlag + "' href='javascript:void(0)' onclick='authRole(" + row.id + ")'><i class='fa fa-check-square-o'></i>分配角色</a>");
 			                actions.push('<a tabindex="0" class="btn btn-info btn-xs" role="button" data-container="body" data-placement="left" data-toggle="popover" data-html="true" data-trigger="hover" data-content="' + more.join('') + '"><i class="fa fa-chevron-circle-right"></i>更多操作</a>');
 			                return actions.join('');
 		            	} else {
@@ -180,7 +176,7 @@
 		
 		function queryDeptTree()
 		{
-			var url = ctx + "system/product/productTreeData";
+			var url = ctx + "system/product/brandTreeData";
 			var options = {
 		        url: url,
 		        expandLevel: 2,
@@ -228,37 +224,37 @@
 		}
 
 		/* 产品管理-重置密码 */
-		function resetPwd(productId) {
-		    var url = prefix + '/resetPwd/' + productId;
+		function resetPwd(id) {
+		    var url = prefix + '/resetPwd/' + id;
 		    $.modal.open("重置密码", url, '800', '300');
 		}
 		
 		/* 产品管理-分配角色 */
-		function authRole(productId) {
-		    var url = prefix + '/authRole/' + productId;
+		function authRole(id) {
+		    var url = prefix + '/authRole/' + id;
 		    $.modal.openTab("产品分配角色", url);
 		}
 		
 		/* 产品状态显示 */
 		function statusTools(row) {
 		    if (row.status == 1) {
-    			return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.productId + '\')"></i> ';
+    			return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="enable(\'' + row.id + '\')"></i> ';
     		} else {
-    			return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.productId + '\')"></i> ';
+    			return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="disable(\'' + row.id + '\')"></i> ';
     		}
 		}
 		
 		/* 产品管理-停用 */
-		function disable(productId) {
+		function disable(id) {
 			$.modal.confirm("确认要停用产品吗？", function() {
-				$.operate.post(prefix + "/changeStatus", { "productId": productId, "status": 1 });
+				$.operate.post(prefix + "/changeStatus", { "id": id, "status": 1 });
 		    })
 		}
 
 		/* 产品管理启用 */
-		function enable(productId) {
+		function enable(id) {
 			$.modal.confirm("确认要启用产品吗？", function() {
-				$.operate.post(prefix + "/changeStatus", { "productId": productId, "status": 0 });
+				$.operate.post(prefix + "/changeStatus", { "id": id, "status": 0 });
 		    })
 		}
 	</script>

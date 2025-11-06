@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 品牌 服务层实现
@@ -50,6 +51,7 @@ public class BrandServiceImpl implements IBrandService
      */
     @Override
     public int insertBrand(Brand brand) {
+        brand.setId(UUID.randomUUID().toString());
         return brandMapper.insertBrand(brand);
     }
 

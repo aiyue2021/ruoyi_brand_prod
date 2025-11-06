@@ -7,7 +7,7 @@
 <body>
     <div class="main-content">
         <form class="form-horizontal" id="form-product-edit" th:object="${product}">
-            <input name="productId"  type="hidden"  th:field="*{productId}" />
+            <input name="id"  type="hidden"  th:field="*{id}" />
 			<input name="brandId"  type="hidden"  th:field="*{brandId}" id="treeId"/>
             <h4 class="form-header h4">基本信息</h4>
             <div class="row">
@@ -24,7 +24,7 @@
                         <label class="col-sm-4 control-label">归属品牌：</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input class="form-control" type="text" name="brandName" onclick="selectDeptTree()" id="treeName" th:field="*{dept.brandName}">
+                                <input class="form-control" type="text" name="brandName" onclick="selectBrandTree()" id="treeName" th:field="*{brand.brandName}">
                             	<span class="input-group-addon"><i class="fa fa-search"></i></span>
                             </div>
                         </div>
@@ -89,38 +89,6 @@
         $("#form-product-edit").validate({
         	onkeyup: false,
         	rules:{
-        		prodUrl:{
-                    prodUrl:true,
-                    remote: {
-                        url: prefix + "/checkEmailUnique",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                        	"productId": function() {
-                                return $("#productId").val();
-                            },
-                			"prodUrl": function() {
-                                return $.common.trim($("#prodUrl").val());
-                            }
-                        }
-                    }
-        		},
-        		phonenumber:{
-        			isPhone:true,
-                    remote: {
-                        url: prefix + "/checkPhoneUnique",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                        	"productId": function() {
-                        		return $("#productId").val();
-                            },
-                			"phonenumber": function() {
-                                return $.common.trim($("#phonenumber").val());
-                            }
-                        }
-                    }
-        		},
         	},
         	messages: {
         		"prodUrl": {
@@ -147,9 +115,9 @@
 	    }
 
         /* 产品管理-修改-选择部门树 */
-        function selectDeptTree() {
+        function selectBrandTree() {
         	var brandId = $.common.isEmpty($("#treeId").val()) ? "100" : $("#treeId").val();
-            var url = ctx + "system/product/selectDeptTree/" + brandId;
+            var url = ctx + "system/product/selectBrandTree/" + brandId;
             var btn = ['<i class="fa fa-check"></i> 确认', '<i class="fa fa-trash-o"></i> 清除', '<i class="fa fa-close"></i> 关闭'];
 		    var options = {
 				title: '选择部门',

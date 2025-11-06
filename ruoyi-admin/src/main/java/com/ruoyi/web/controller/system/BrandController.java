@@ -65,7 +65,7 @@ public class BrandController extends BaseController
      * 新增保存品牌
      */
     @RequiresPermissions("system:brand:add")
-    @Log(title = "通知品牌", businessType = BusinessType.INSERT)
+    @Log(title = "品牌", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated Brand brand)
@@ -88,7 +88,7 @@ public class BrandController extends BaseController
      * 修改保存品牌
      */
     @RequiresPermissions("system:brand:edit")
-    @Log(title = "通知品牌", businessType = BusinessType.UPDATE)
+    @Log(title = "品牌", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated Brand brand)
@@ -111,7 +111,7 @@ public class BrandController extends BaseController
      * 删除品牌
      */
     @RequiresPermissions("system:brand:remove")
-    @Log(title = "通知品牌", businessType = BusinessType.DELETE)
+    @Log(title = "品牌", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(String ids)
