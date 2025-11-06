@@ -37,6 +37,13 @@ public interface ProductMapper
 
     /**
      * 新增产品
+     *
+     * @param products 产品信息
+     * @return 结果
+     */
+    public int insertProducts(List<Product> products);
+    /**
+     * 新增产品
      * 
      * @param product 产品信息
      * @return 结果

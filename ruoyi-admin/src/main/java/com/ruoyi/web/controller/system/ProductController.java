@@ -139,7 +139,7 @@ public class ProductController extends BaseController
         mmap.put("id", prodId);
         Product product = productService.selectProductById(prodId);
         mmap.put("product", product);
-        mmap.put("brand", product.getBrandId());
+        mmap.put("brand", product.getBrand());
         return prefix + "/edit";
     }
 

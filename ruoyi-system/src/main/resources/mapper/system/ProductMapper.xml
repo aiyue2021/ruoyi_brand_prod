@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="brandUrl"     column="brand_url"     />
     </resultMap>
     <sql id="selectProductVo">
-        select HEX(p.id) as id, HEX(d.brand_id) as brand_id, d.brand_name, prod_name, prod_url,brand_id,prod_name,prod_url,prod_price,prod_sales_score,prod_type,prod_date
+        select HEX(p.id) as id, HEX(d.id) as brand_id, d.brand_name, prod_name, prod_url,brand_id,prod_name,prod_url,prod_price,prod_sales_score,prod_type,prod_date
 		from product as p
         left join brand as d on p.brand_id = d.id
     </sql>
@@ -62,6 +62,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="prodUrl != null and prodUrl != ''">
 				AND prod_url = #{prodUrl}
 			</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(prod_date,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(prod_date,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+            </if>
 		</where>
     </select>
     
@@ -74,7 +80,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectProductVo"/>
         where prod_name = #{prodName} limit 1
     </select>
-    
+    <insert id="insertProducts" parameterType="java.util.List">
+        INSERT INTO product (
+        id,
+        brand_id,
+        prod_name,
+        prod_url,
+        prod_price,
+        prod_sales_score,
+        prod_type,
+        prod_date
+        ) VALUES
+        <foreach collection="list" item="product" separator=",">
+            (
+            UNHEX(REPLACE(#{product.id}, '-', '')),
+            <choose>
+                <when test="product.brandId != null and product.brandId != ''">UNHEX(#{product.brandId})</when>
+                <otherwise>NULL</otherwise>
+            </choose>,
+            #{product.prodName},
+            #{product.prodUrl},
+            #{product.prodPrice},
+            #{product.prodSalesScore},
+            #{product.prodType},
+            #{product.prodDate}
+            )
+        </foreach>
+    </insert>
     <insert id="insertProduct" parameterType="Product">
         insert into product (
         <if test="brandId != null and brandId != '' ">brand_id,</if>

@@ -100,6 +100,11 @@ public class ProductServiceImpl implements IProductService
         return productMapper.insertProduct(product);
     }
 
+    @Override
+    public int insertProducts(List<Product> products) {
+        return productMapper.insertProducts(products);
+    }
+
     /**
      * 修改产品
      * 

@@ -46,6 +46,15 @@ public interface IProductService
      */
     public int insertProduct(Product product);
 
+
+    /**
+     * 新增产品
+     *
+     * @param products 产品信息
+     * @return 结果
+     */
+    public int insertProducts(List<Product> products);
+
     /**
      * 修改产品
      * 
