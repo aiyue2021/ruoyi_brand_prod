@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="brandUrl"     column="brand_url"     />
     </resultMap>
     <sql id="selectProductVo">
-        select HEX(p.id) as id, d.brand_name, prod_name, prod_url,brand_id,prod_name,prod_url,prod_price,prod_sales_score,prod_type,prod_date
+        select HEX(p.id) as id, HEX(d.brand_id) as brand_id, d.brand_name, prod_name, prod_url,brand_id,prod_name,prod_url,prod_price,prod_sales_score,prod_type,prod_date
 		from product as p
         left join brand as d on p.brand_id = d.id
     </sql>
@@ -67,7 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectProductById" parameterType="String" resultMap="ProductResult">
 		<include refid="selectProductVo"/>
-		where id = UNHEX(#{id})
+		where p.id = UNHEX(#{id})
 	</select>
 
     <select id="checkProductKeyUnique" parameterType="String" resultMap="ProductResult">
